@@ -1,0 +1,215 @@
+
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<title>RRB PO — Operating System Mock Test (50 Qns)</title>
+<style>
+  body{font-family: Arial, Helvetica, sans-serif; max-width:900px; margin:20px auto; padding:10px;}
+  .header{display:flex;justify-content:space-between;align-items:center;}
+  .timer{font-size:18px; background:#222;color:#fff;padding:8px 12px;border-radius:6px;}
+  .card{border:1px solid #ddd;padding:18px;border-radius:8px;margin-top:12px;}
+  .options button{display:block;margin:8px 0;padding:10px;border-radius:6px;border:1px solid #ccc;background:#f9f9f9;cursor:pointer;text-align:left;width:100%;}
+  .options button.selected{background:#d0ebff;border-color:#74b9ff;}
+  .controls{display:flex;justify-content:space-between;margin-top:12px;}
+  .controls button{padding:10px 16px;border-radius:6px;cursor:pointer;}
+  .summary{margin-top:16px;}
+  .explanation{background:#f7f7f7;padding:12px;border-radius:6px;margin-top:8px;border-left:4px solid #4a90e2;}
+  .hide{display:none;}
+  .qcount{font-size:14px;color:#555;}
+  .footer{margin-top:20px;font-size:13px;color:#666;}
+</style>
+</head>
+<body>
+  <div class="header">
+    <h2>RRB PO — Operating System Mock Test</h2>
+    <div>
+      <div class="timer" id="timer">10:00</div>
+      <div style="font-size:12px;color:#555;text-align:right;margin-top:6px;">Total: 50 Qs | Difficult Level</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="qcount" id="qcount">Question 1 of 50</div>
+    <h3 id="question">Loading...</h3>
+    <div class="options" id="options"></div>
+
+    <div class="controls">
+      <div>
+        <button id="prevBtn" onclick="prevQ()" disabled>Previous</button>
+        <button id="nextBtn" onclick="nextQ()">Next</button>
+      </div>
+      <div>
+        <button id="markBtn" onclick="toggleMark()">Mark for Review</button>
+        <button id="submitBtn" onclick="submitTest()">Submit</button>
+      </div>
+    </div>
+    <div style="margin-top:10px;">
+      <small>Selected: <span id="selectedSummary">None</span></small>
+      <small style="margin-left:18px;color:#666"> | Marked for review: <span id="markedCount">0</span></small>
+    </div>
+  </div>
+
+  <div id="result" class="card hide"></div>
+
+  <div class="footer">
+    Tip: Attempt all questions. Explanations and correct answers will be shown only after you press Submit or when timer ends.
+  </div>
+
+<script>
+const QUESTIONS = [
+{"q":"1. Kernel ka primary function kya hota hai?","opts":["Memory management","File organization","Application execution","Network routing"],"ans":0,"exp":"Kernel system ke core me hota hai aur hardware aur software resources ko manage karta hai—including memory management, process scheduling, device management."},
+{"q":"2. Thrashing kis condition me hota hai?","opts":["CPU overloaded ho","Disk corrupted ho","Excessive page faults ho","Cache overflow ho"],"ans":2,"exp":"Thrashing tab hota hai jab system me bahut zyada page faults ho rahe hote hain, jisse CPU zyadatar time paging ke sath engaged ho aur useful work kam ho."},
+{"q":"3. Bootstrap loader kaha stored hota hai?","opts":["Cache","ROM","Hard Disk","RAM"],"ans":1,"exp":"Bootstrap loader ya bootloader firmware me stored hota hai (typically ROM/UEFI). Ye initial code hota hai jo system start hone par OS ko load karta hai."},
+{"q":"4. Multitasking kis cheez ka concept hai?","opts":["Multiple processors","Multiple OS","Multiple tasks concurrently","Multiple disks"],"ans":2,"exp":"Multitasking ka matlab ek system par ek sath multiple tasks/processes ka execution—time-sharing ke through."},
+{"q":"5. UNIX OS rewrite kis language me hua tha?","opts":["Python","Java","C","Assembly"],"ans":2,"exp":"UNIX ko originally C language me likha gaya tha (Dennis Ritchie & Ken Thompson ne C ka upyog kiya) jisse portability badhi."},
+{"q":"6. RTOS ka main purpose kya hota hai?","opts":["Speed optimization","Guaranteed deadline","High graphics support","Multi-user support"],"ans":1,"exp":"RTOS (Real-Time OS) ka objective deterministic timing guarantees dena—i.e., tasks deadlines meet karna."},
+{"q":"7. System call ka use kya hota hai?","opts":["User interface control","Hardware shutdown","OS services ko request karna","File copying"],"ans":2,"exp":"System call ek mechanism hai jisse user programs OS services (I/O, process control) ko request karte hain."},
+{"q":"8. Deadlock kis condition me hota hai?","opts":["One resource only","Circular wait","CPU overuse","Paging error"],"ans":1,"exp":"Deadlock tab hota hai jab circular wait condition exist kare—processes ek dusre ke resources ka wait kar rahe ho."},
+{"q":"9. Paging ka main purpose kya hota hai?","opts":["Disk formatting","Physical memory expand karna","Memory fragmentation avoid karna","CPU scheduling improve karna"],"ans":2,"exp":"Paging logical memory ko fixed-size pages me divide karta hai, taaki external fragmentation avoid ho aur memory manage ho sake."},
+{"q":"10. Spooling mainly kis device ke liye use hota hai?","opts":["Scanner","Printer","Keyboard","Mouse"],"ans":1,"exp":"Spooling ek technique hai jisme jobs (e.g., print jobs) ko queue me store karke sequentially device (printer) ko diya jata hai."},
+{"q":"11. Semaphore kis liye use hota hai?","opts":["Memory expansion","File organization","Process synchronization","Boot management"],"ans":2,"exp":"Semaphore ek synchronization primitive hai jo mutual exclusion aur process coordination ke liye use hota hai."},
+{"q":"12. OS ka kaunsa part hardware se direct interact karta hai?","opts":["Shell","Kernel","Application","Device manager"],"ans":1,"exp":"Kernel hardware ke saath directly interact karta hai via device drivers and low-level interfaces."},
+{"q":"13. FCFS scheduling ka disadvantage kya hai?","opts":["No starvation","High CPU usage","Convoy effect","Fast execution"],"ans":2,"exp":"FCFS me convoy effect hota hai—long job queue ke wajah se chhote jobs ka wait badh jaata hai."},
+{"q":"14. Interrupt ka purpose kya hota hai?","opts":["Program ko slow karna","OS ko notify karna","Memory clean karna","Device connect karna"],"ans":1,"exp":"Interrupt ek signal hai jo CPU ko asynchronous event ke baare me notify karta hai, jisse OS appropriate interrupt handler execute karta hai."},
+{"q":"15. Virtual memory ka main benefit kya hota hai?","opts":["Computer speed double ho jati hai","CPU idle hota hai","Large programs run ho sakte hain","Hard disk speed badh jati hai"],"ans":2,"exp":"Virtual memory allow karta hai ki physical memory se zyada logical address space use kiya ja sake, jisse large programs run ho sakte hain using paging/swapping."},
+{"q":"16. Process control block (PCB) me kya store hota hai?","opts":["Keyboard buffer","Process metadata","Sound drivers","Printer queue"],"ans":1,"exp":"PCB me process state, program counter, CPU registers, memory limits, accounting info etc. store hota hai."},
+{"q":"17. Round Robin scheduling me time slice ko kya bolte hain?","opts":["Time block","Time quantum","Task period","CPU slot"],"ans":1,"exp":"Time quantum ya time slice wo interval hota hai jo ek process ko CPU diya jata hai before it is preempted."},
+{"q":"18. Zombie process kab banta hai?","opts":["Process blocked ho","Parent process terminate ho jaye","Child terminate ho aur parent wait na kare","Process idle ho"],"ans":2,"exp":"Zombie process wo child process hota hai jo terminate ho chuka hai lekin parent ne uski exit status read nahi ki—entry PCB remain karta hai."},
+{"q":"19. Context switching kab hota hai?","opts":["Power failure","CPU process change kare","RAM full ho","Hard disk slow ho"],"ans":1,"exp":"Context switch tab hota hai jab CPU ek process se dusre process pe switch karta hai—registers, program counter etc. save/restore karne par."},
+{"q":"20. Priority scheduling me starvation kis wajah se hota hai?","opts":["Same priority","Low priority processes delay hona","High memory","Fast CPU"],"ans":1,"exp":"Low priority processes indefinite wait kar sakte hain agar higher priority processes continuously aate rahein—this causes starvation."},
+{"q":"21. Which state is NOT typically part of a standard process state model?","opts":["Running","Waiting","Sleeping","Ready"],"ans":2,"exp":"Common states: New, Ready, Running, Waiting, Terminated. 'Sleeping' is sometimes used synonymously with waiting but not standard label in basic models."},
+{"q":"22. Mutex vs Semaphore - primary difference?","opts":["Mutex allows multiple owners","Semaphore is binary only","Mutex is for mutual exclusion with single owner","Semaphore cannot synchronize"],"ans":2,"exp":"Mutex ek mutual exclusion primitive hai jiska single owner hota hai; semaphore counters use karte hain and can allow multiple units."},
+{"q":"23. Belady's anomaly relates to which page replacement algorithm?","opts":["LRU","FIFO","Optimal","Clock"],"ans":1,"exp":"Belady's anomaly is the counterintuitive situation where increasing frames increases page faults; observed in FIFO page replacement."},
+{"q":"24. The working set model is used to determine?","opts":["CPU burst time","Set of pages a process is currently using","Priority of a process","I/O device list"],"ans":1,"exp":"Working set = set of pages referenced by a process in a given time window; used for thrashing avoidance and allocation."},
+{"q":"25. Copy-on-write technique is mainly used in?","opts":["I/O scheduling","Process creation (fork)","Disk formatting","CPU scheduling"],"ans":1,"exp":"Copy-on-write used during fork—parent and child share pages until one modifies, then copy occurs—saves memory."},
+{"q":"26. Which is TRUE about demand paging?","opts":["All pages loaded at process start","Pages loaded only when referenced","Pages never loaded","Pages loaded in reverse order"],"ans":1,"exp":"Demand paging loads a page into memory only when it is referenced, reducing initial load time and memory usage."},
+{"q":"27. Thrashing can be reduced by?","opts":["Decreasing CPU speed","Increasing degree of multiprogramming","Working set based allocation","Turning off paging"],"ans":2,"exp":"Working set based allocation and reducing degree of multiprogramming (or increasing physical memory) helps reduce thrashing."},
+{"q":"28. Inodes in UNIX file system store?","opts":["File data content","Metadata like permissions, pointers to blocks","User passwords","Kernel code"],"ans":1,"exp":"Inode stores file metadata (permissions, ownership, timestamps) and pointers to data blocks, not actual content."},
+{"q":"29. Which scheduling algorithm gives minimum average waiting time (theoretically)?","opts":["FCFS","SJF (non-preemptive)","Round Robin","Priority"],"ans":1,"exp":"SJF (Shortest Job First) gives minimum average waiting time among non-preemptive algorithms if burst times known."},
+{"q":"30. Aging technique is used to?","opts":["Prevent deadlock","Avoid starvation in priority scheduling","Increase throughput","Balance I/O"],"ans":1,"exp":"Aging gradually increases priority of waiting processes to avoid starvation."},
+{"q":"31. Which page replacement algorithm approximates LRU with low overhead?","opts":["FIFO","Optimal","Clock (Second Chance)","Random"],"ans":2,"exp":"Clock (second-chance) algorithm approximates LRU with circular buffer and reference bits, low overhead."},
+{"q":"32. What does 'atomic operation' mean?","opts":["Operation that takes no time","Operation that is indivisible and completes fully or not at all","Very fast operation","Operation requiring atomic hardware"],"ans":1,"exp":"Atomic operation is indivisible—no intermediate state visible—critical for synchronization primitives."},
+{"q":"33. Swap space is used for?","opts":["Storing backups","Extending physical memory by moving inactive pages to disk","Storing executable files","Logging kernel events"],"ans":1,"exp":"Swap space holds pages moved out of physical memory to disk to free RAM—part of virtual memory implementation."},
+{"q":"34. Which of the following is NOT a deadlock prevention strategy?","opts":["Mutual exclusion removal","Hold and wait prevention","Circular wait allowance","No preemption"],"ans":2,"exp":"Circular wait is one of Coffman conditions; allowing it is not a prevention strategy. Prevention involves breaking one of the Coffman conditions such as no-hold-and-wait, no mutual exclusion, preemption, or ordering resources."},
+{"q":"35. The 'fork' system call in UNIX returns what to the parent process?","opts":["0","PID of child","Exit status","File descriptor"],"ans":1,"exp":"fork() returns child's PID to the parent and 0 to the child; -1 on error."},
+{"q":"36. Critical section problem ensures?","opts":["Throughput maximization","Mutual exclusion, progress and bounded waiting","No context switches","No interrupts"],"ans":1,"exp":"Correct solution must provide mutual exclusion, progress (no deadlock) and bounded waiting (no starvation)."}, 
+{"q":"37. File system journaling primarily helps in?","opts":["Speeding up reads","Recovering from crashes and maintaining consistency","Compressing files","Increasing disk size"],"ans":1,"exp":"Journaling records metadata (and sometimes data) changes so after crash, filesystem can be quickly recovered to consistent state."},
+{"q":"38. Which IPC mechanism is fastest for processes on same machine?","opts":["Message passing over network","Shared memory","Files","Pipes"],"ans":1,"exp":"Shared memory offers fastest IPC since processes access common memory region; requires synchronization primitives."},
+{"q":"39. Bootstrapping in modern PCs is handled by?","opts":["BIOS/UEFI firmware","Operating System only","Application software","Device drivers"],"ans":0,"exp":"BIOS/UEFI firmware initializes hardware and finds bootloader to load the OS."},
+{"q":"40. Which is true about 'preemptive' scheduling?","opts":["Process runs until completion","Scheduler can forcibly remove CPU from process","No context switch occurs","Only one process exists"],"ans":1,"exp":"In preemptive scheduling, scheduler may interrupt running process to assign CPU to another (based on time quantum or priority)."},
+{"q":"41. The 'nice' value in UNIX affects?","opts":["Memory limits","Process priority (scheduling)","File permissions","Network bandwidth"],"ans":1,"exp":"nice/renice modifies scheduling priority—higher nice value lowers priority (more 'nicely' yield CPU)."},
+{"q":"42. Page fault occurs when?","opts":["Referencing a page that is in physical memory","Referencing a page that is not in physical memory","Disk read completes","Program terminates"],"ans":1,"exp":"Page fault triggered when referenced page is not present in physical memory, causing OS to load it from disk."},
+{"q":"43. Which of the following is a disadvantage of contiguous memory allocation?","opts":["Simplicity","External fragmentation","Fast access","Easy to implement"],"ans":1,"exp":"Contiguous allocation suffers from external fragmentation as free memory splits into chunks that might not fit new processes."},
+{"q":"44. In client-server OS architecture, which is true?","opts":["Client provides resources to server","Server provides services to client","No communication occurs","Clients are always more powerful"],"ans":1,"exp":"Server offers services/resources; clients request and consume services."},
+{"q":"45. 'Load balancing' in OS context is used for?","opts":["Even distribution of work among processors/servers","Memory swapping","File allocation","Priority inversion"],"ans":0,"exp":"Load balancing distributes workload across processors/servers to optimize resource use and response time."},
+{"q":"46. Priority inversion problem can be solved by?","opts":["Disabling interrupts","Priority inheritance protocol","Aging only","Turning off preemption"],"ans":1,"exp":"Priority inheritance temporarily raises priority of lower-priority task holding a resource to avoid inversion."},
+{"q":"47. What does 'inode' point to in UNIX?","opts":["Another inode","Data block(s)","Kernel code","Swap area"],"ans":1,"exp":"Inode contains pointers to data blocks where file content is stored."},
+{"q":"48. Device drivers operate primarily in which mode?","opts":["User mode","Kernel mode","Virtual machine mode","Interpreter mode"],"ans":1,"exp":"Device drivers require privileged access to hardware, so they run in kernel mode."},
+{"q":"49. 'Best-fit' memory allocation strategy tries to?","opts":["Choose smallest hole that fits process","Choose largest hole","Choose first available hole","Random selection"],"ans":0,"exp":"Best-fit selects smallest free partition that is adequate, aiming to reduce wasted space (but can increase fragmentation)."},
+{"q":"50. Which algorithm avoids convoy effect and is starvation-free if preemption allowed?","opts":["FCFS","SJF nonpreemptive","Round Robin with finite quantum","Priority without aging"],"ans":2,"exp":"Round Robin with appropriate time quantum prevents convoy effect and, being time-shared, avoids starvation (assuming finite quantum and fairness)."}
+];
+
+let current = 0;
+let answers = new Array(QUESTIONS.length).fill(null);
+let marked = new Array(QUESTIONS.length).fill(false);
+let totalTime = 10*60; // default 10 minutes (user preference)
+let timerId = null;
+let started = false;
+
+function startTimer(){
+  if(started) return;
+  started = true;
+  const display = document.getElementById('timer');
+  timerId = setInterval(()=>{
+    if(totalTime<=0){
+      clearInterval(timerId);
+      submitTest(); return;
+    }
+    totalTime--;
+    let mm = Math.floor(totalTime/60).toString().padStart(2,'0');
+    let ss = (totalTime%60).toString().padStart(2,'0');
+    display.textContent = mm+":"+ss;
+  },1000);
+}
+
+function renderQuestion(idx){
+  startTimer();
+  current = idx;
+  const q = QUESTIONS[idx];
+  document.getElementById('qcount').textContent = 'Question '+(idx+1)+' of '+QUESTIONS.length;
+  document.getElementById('question').textContent = q.q;
+  const optsDiv = document.getElementById('options');
+  optsDiv.innerHTML = '';
+  q.opts.forEach((opt,i)=>{
+    const btn = document.createElement('button');
+    btn.innerHTML = String.fromCharCode(65+i)+'.  '+opt;
+    btn.onclick = ()=>{ selectOption(idx,i); };
+    if(answers[idx]===i) btn.classList.add('selected');
+    optsDiv.appendChild(btn);
+  });
+  document.getElementById('prevBtn').disabled = (idx===0);
+  document.getElementById('nextBtn').disabled = (idx===QUESTIONS.length-1);
+  document.getElementById('selectedSummary').textContent = (answers[idx]===null)?'None':String.fromCharCode(65+answers[idx]);
+  document.getElementById('markedCount').textContent = marked.filter(x=>x).length;
+  document.getElementById('markBtn').textContent = marked[idx] ? 'Unmark' : 'Mark for Review';
+}
+
+function selectOption(qIdx,optIdx){
+  answers[qIdx]=optIdx;
+  renderQuestion(qIdx);
+}
+
+function nextQ(){
+  if(current<QUESTIONS.length-1) renderQuestion(current+1);
+}
+
+function prevQ(){
+  if(current>0) renderQuestion(current-1);
+}
+
+function toggleMark(){
+  marked[current] = !marked[current];
+  document.getElementById('markedCount').textContent = marked.filter(x=>x).length;
+  renderQuestion(current);
+}
+
+function submitTest(){
+  if(confirm('Are you sure you want to submit the test?')) {
+    finalize();
+  }
+}
+
+function finalize(){
+  clearInterval(timerId);
+  // calculate score
+  let score=0;
+  for(let i=0;i<QUESTIONS.length;i++){
+    if(answers[i]!==null && answers[i]===QUESTIONS[i].ans) score++;
+  }
+  const resultDiv = document.getElementById('result');
+  resultDiv.classList.remove('hide');
+  resultDiv.innerHTML = '<h3>Result</h3>';
+  resultDiv.innerHTML += '<div class="summary"><strong>Score: '+score+' / '+QUESTIONS.length+'</strong></div>';
+  resultDiv.innerHTML += '<div style="margin-top:8px;"><strong>Marked for review:</strong> '+marked.map((m,i)=>m? (i+1):null).filter(x=>x).join(', ')+'</div>';
+  // show per-question result with explanation
+  let details = '';
+  QUESTIONS.forEach((q,i)=>{
+    const user = answers[i]===null? 'Not Attempted' : String.fromCharCode(65+answers[i]) + '. ' + q.opts[answers[i]];
+    const correct = String.fromCharCode(65+q.ans) + '. ' + q.opts[q.ans];
+    const correctFlag = (answers[i]===q.ans)? '✅ Correct' : '❌ Wrong';
+    details += '<div style="margin-top:12px;"><strong>Q'+(i+1)+'. '+q.q+'</strong>';
+    details += '<div style="margin-top:6px;"><em>Your answer:</em> '+user+'</div>';
+    details += '<div><em>Correct answer:</em> '+correct+' '+correctFlag+'</div>';
+    details += '<div class="explanation"><strong>Explanation:</strong> '+q.exp+'</div></div>';
+  });
+  resultDiv.innerHTML += details;
+  // scroll to result
+  resultDiv.scrollIntoView({behavior:'smooth'});
+}
+
+// initialize
+renderQuestion(0);
+</script>
+</body>
+</html>
